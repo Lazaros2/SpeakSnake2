@@ -1,0 +1,282 @@
+/* Importar fonte do Google */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap');
+
+* { 
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+}/*aplica em todos*/
+
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #ffffff;
+}
+.wrapper{
+    display: flex;
+    width: 90vmin;
+    height: 90vmin;
+    border-radius: 10px;
+    background: #1b721b;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.game-details{
+    color: aliceblue;
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding: 20px 27px;
+    display: flex;
+    justify-content: space-between;
+    border-top-left-radius:10px;
+    border-top-right-radius:10px;
+}
+
+.play-board{
+    display: grid; /*mudar pra gri*/
+    width: 100%;
+    height: 100%;
+    background-color: #FCE060;
+    grid-template: repeat(30,1fr)/repeat(30,1fr); /*número de quadrados verticais se horizontais*/
+    aspect-ratio: 1 / 1; /* Adiciona esta linha */
+}
+
+.play-board div {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    background-size: cover; /* Garante que a imagem cubra toda a célula */
+    background-repeat: no-repeat;
+}
+
+.play-board .food{
+    background: #b12d2d;
+}
+
+.play-board .snake{
+    background: #5B7BF9;
+    border: 2px black;
+}
+
+
+
+.mSelecao,.mLogin,.mRegister{
+    /* display: flex;*/
+    display: flex;
+    width: 90vmin;
+    height: 90vmin;
+    border-radius: 10px;
+    background-color: white;
+    flex-direction: column;
+    overflow: hidden;
+    align-items: center;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+.mFala,.imagemPalavra{
+    /* display: flex;*/
+    display: none;
+    width: 90vmin;
+    height: 90vmin;
+    border-radius: 10px;
+    background: #ffffff;
+    flex-direction: column;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    padding-bottom:10px;
+    margin-right: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+.mPontos {
+    display: none;
+    width: 90vmin;
+    height: 90vmin;
+    border-radius: 10px;
+    background: #ffffff;
+    flex-direction: column;
+    justify-content: center; /* Centraliza os elementos verticalmente */
+    align-items: center; /* Centraliza os elementos horizontalmente */
+    overflow: hidden;
+    padding-bottom: 10px;
+    margin-right: 20px;
+    text-align: center; /* Centraliza o texto dentro dos elementos */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra para um efeito visual melhor */
+}
+
+
+.mVitoria{
+    /* display: flex;*/
+    display: none;
+    width: 90vmin;
+    height: 90vmin;
+    border-radius: 10px;
+    background: #ffffff;
+    flex-direction: column;
+    overflow: hidden;
+    align-items: center;
+}
+.Login,.boardBtn{
+    background-color: rgb(0, 183, 0);
+    color: rgb(0, 0, 0);
+    padding: 10px 20px;
+    border: flex;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 25px;
+    transition: all 300ms ease;
+}
+
+
+.Login:hover, .boardBtn:hover {
+    box-shadow: 0 0 12px var(--primary-color); /* Adiciona sombra quando o mouse está sobre .Login ou .boardBtn */
+    color: aliceblue; 
+}
+
+
+
+.registerBtn{
+    background-color: rgb(0, 36, 102);
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    border: flex;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+.returnBtn,.returnBtn1{
+    background-color: rgb(173, 0, 0);
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    border: flex;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 15px;
+    transition: all 300ms ease;
+}
+
+.returnBtn:hover, .boardBtn1:hover {
+    box-shadow: 0 0 12px var(rgb(173, 0, 0)); /* Adiciona sombra quando o mouse está sobre .Login ou .boardBtn */
+}
+
+
+form{
+    text-align: center;
+}
+input{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid black;
+    border-radius: 4px;
+  }
+
+  .radio-group {
+    display: flex;
+    align-items: center; /* Aligns items vertically in the middle */
+    gap: 5px; /* Adds some space between the radio button and label */
+    margin-left: 5px;
+    margin-left: 5px;
+}
+
+
+
+
+.container {
+    
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 130px;
+    
+}
+
+
+.endBtn{
+    background-color: rgb(173, 0, 0);
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    border: none; /* Você pode remover 'flex' aqui */
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 25px;
+    transition: all 300ms ease;
+}
+
+.endBtn:hover {
+    background-color: #cc0000; /* Cor de fundo ao passar o mouse */
+}
+
+.skipBtn{
+    background-color: rgb(0, 20, 173);
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    border: none; /* Você pode remover 'flex' aqui */
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 25px;
+    transition: all 300ms ease;
+}
+
+.skipBtn:hover {
+    background-color: #0018cc; /* Cor de fundo ao passar o mouse */
+}
+
+
+.button-container {
+    display: flex; /* Enable flexbox layout */
+    align-items: center; /* Align buttons vertically */
+    justify-content: space-between;
+}
+
+#listenBtn {
+    background-color: #4CAF50; /* Cor de fundo */
+    border: none; /* Remover bordas padrão */
+    color: rgb(0, 0, 0); /* Cor do texto */
+    padding: 15px 32px; /* Espaçamento interno */
+    text-align: center; /* Alinhamento do texto */
+    text-decoration: none; /* Remover sublinhado */
+    display: inline-block; /* Exibição inline */
+    font-size: 30px; /* Tamanho da fonte */
+    cursor: pointer; /* Cursor ao passar o mouse */
+    border-radius: 12px; /* Bordas arredondadas */
+    transition: background-color 0.3s ease; /* Transição suave */
+}
+#listenBtn, .endBtn {
+    margin: 0 5px; /* Optionally add minimal space between buttons */
+    padding: 10px 20px; /* Adjust padding if needed */
+}
+
+/* Efeito hover */
+#listenBtn:hover {
+    background-color: #45a049; /* Cor de fundo ao passar o mouse */
+}
+
+/* Efeito de clique */
+#listenBtn:active {
+    background-color: #3e8e41; /* Cor de fundo ao clicar */
+    transform: translateY(2px); /* Efeito de clique */
+}
+
+/* Efeito de foco */
+#listenBtn:focus {
+    outline: none; /* Remover outline padrão */
+    box-shadow: 0 0 3pt 2pt #45a049; /* Adicionar sombra ao focar */
+}
+
+.mFala h1 {
+    font-size: clamp(8vw, 10vw, 5rem);
+    margin: 0 10px;
+    text-align: center;
+    word-wrap: break-word;
+  }
