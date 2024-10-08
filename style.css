@@ -70,6 +70,7 @@ body{
     display: flex;
     width: 90vmin;
     height: 90vmin;
+    min-height: 700px;
     border-radius: 10px;
     background-color: white;
     flex-direction: column;
@@ -280,3 +281,124 @@ input{
     text-align: center;
     word-wrap: break-word;
   }
+
+  
+  :root {
+    --primary-color: #2db12d;
+    --hover-color: darkgreen;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+/* Centralizar e definir limite de largura para container */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    border: 5px;
+}
+
+/* Grupo de Radio Buttons */
+.radio-tile-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 20px;
+}
+
+/* Estilização para os containers das opções */
+.input-container {
+    position: relative;
+    min-height: 100px;
+    margin: 0.5rem;
+}
+
+.input-container input {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    cursor: pointer;
+    z-index: 2;
+    opacity: 0;
+}
+
+/* Estilo comum para os radio-tile */
+.radio-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 15vw;
+    max-width: 230px;
+    min-width: 192px;
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    transition: all 300ms ease;
+    text-align: center;
+}
+
+.input-container .material-icons {
+    color: var(--primary-color);
+    font-size: 3rem;
+}
+
+.input-container label {
+    color: var(--primary-color);
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Quando o input é selecionado */
+input:checked + .radio-tile {
+    background-color: var(--primary-color);
+    box-shadow: 0 0 12px var(--primary-color);
+    transform: scale(1.1);
+}
+
+input:checked + .radio-tile .material-icons,
+input:checked + .radio-tile label {
+    color: white;
+}
+
+/* Hover effect */
+input:hover + .radio-tile {
+    box-shadow: 0 0 12px var(--primary-color);
+}
+
+/* Estilo para botões */
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button:hover {
+    background-color: var(--hover-color);
+}

@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var listenBtn = $("#listenBtn");
         var skipBtn = $("#skipBtn");
 
-        var pontos = 0;
+        //var pontos = 0;
 
         var msg = new SpeechSynthesisUtterance();
         var voices = window.speechSynthesis.getVoices();
