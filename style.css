@@ -318,7 +318,7 @@ body {
 /* Grupo de Radio Buttons */
 .radio-tile-group {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
     gap: 1rem;
     margin-bottom: 20px;
@@ -350,11 +350,13 @@ body {
     height: 100%;
     width: 15vw;
     max-width: 230px;
-    min-width: 192px;
     border: 2px solid var(--primary-color);
     border-radius: 8px;
+    padding: 5px;
+    box-sizing: border-box;
     transition: all 300ms ease;
     text-align: center;
+    font-size: 10px;
 }
 
 .input-container .material-icons {
@@ -364,7 +366,7 @@ body {
 
 .input-container label {
     color: var(--primary-color);
-    font-size: 1rem;
+    font-size: clamp(1.4vw, 1.4vw, 150px);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1px;
