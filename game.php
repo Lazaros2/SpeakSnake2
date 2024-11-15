@@ -31,7 +31,7 @@
             <button id="finalizar" class="finalizar" style="background-color: red; color: white; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; margin-top: 10px; border-radius: 10px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);">Finalizar</button>
         </div>
 
-        <div class="play-board" id="play-board"></div>
+        <canvas id="play-board" width="600" height="600"></canvas>
     </div>
 
 
