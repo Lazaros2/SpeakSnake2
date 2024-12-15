@@ -28,11 +28,12 @@
     <div class="wrapper" id="wrapper">
         <div class="game-details" style="display: flex; align-items: center;">
             <span id="score" style="margin-right: auto;">Pontos: 000</span>
+            <button id="pausar" class="pausar" style="background-color:rgb(81, 72, 245); color: white; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; margin-top: 10px; margin-right: 10px; border-radius: 10px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);">Pausar</button>
             <button id="finalizar" class="finalizar" style="background-color: red; color: white; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; margin-top: 10px; border-radius: 10px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);">Finalizar</button>
         </div>
-
-        <canvas id="play-board" width="600" height="600"></canvas>
+        <canvas id="play-board" width="300" height="300"></canvas>
     </div>
+    
 
 
         <div class="mFala" id="mFala">

@@ -184,6 +184,16 @@ input{
     width: 10vw;
     height: auto;
   }
+  canvas{
+    background-color: #2dca2d;
+    width: 100%; /* Ajusta para caber no wrapper */
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: none;
+    display: block; /* Remove espaçamento automático em alguns navegadores */
+    box-sizing: content-box;
+  }
 
   .radio-group {
     display: flex;

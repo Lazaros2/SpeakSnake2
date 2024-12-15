@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
         recognition.lang = "pt-br";
         recognition.interimResults = false;
 
-        //let foodX = 13, foodY = 10;
         let gamePaused = false;
         let gameInterval = null;
         var recognitionTimeout = null;
@@ -52,10 +51,34 @@ document.addEventListener('DOMContentLoaded', function() {
             {x: 130, y: 150},
             {x: 120, y: 150},
             {x: 110, y: 150},
-        ];//coordenadas do corpo da cobra, voo mudar deposi
+        ];//coordenadas do corpo da cobra, que serão atualizadas depois
 
-        let snakeX = 13, snakeY = 9;
-        let velX = 10, velY = 0;//velocidade
+ 
+        let velX = 10, velY = 0;//velocidade inicial
+        let foodX, foodY; //posição da comida
+        let pontos=0;
+        
+        function changeFoodPosition (){
+
+            foodX = Math.floor(Math.random() * (playBoard.width / 10)) * 10;
+            foodY = Math.floor(Math.random() * (playBoard.height / 10)) * 10;
+            console.log("Posição"+foodX,foodY);
+        
+            while (snakeBody.some(part => part.x === foodX && part.y === foodY)) {
+                foodX = Math.floor(Math.random() * (playBoard.width / 10)) * 10;
+                foodY = Math.floor(Math.random() * (playBoard.height / 10)) * 10;
+            }//garante que a comida não estará dentro do corpo da cobra
+
+        
+        };
+        //changeFoodPosition();
+        function drawFood(){
+            ctx.fillStyle = 'red';
+            ctx.strokestyle = 'darkred';
+            ctx.fillRect(foodX, foodY, 10, 10);
+            ctx.strokeRect(foodX, foodY, 10, 10);
+        }
+
 
         function startRecognition() {
             if (isRecognitionActive) {
@@ -71,6 +94,118 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        function pronunciaCerta() {
+            console.log("Você acertou!");
+            let pontosP = 0;
+            switch (filaPalavras[0].vidas) {
+                case 3:
+                    pontosP = 100;
+                    console.log("Vc ganhou 100 pontos!");
+                    break;
+                case 2:
+                    pontosP = 50;
+                    console.log("Vc ganhou 50 pontos!");
+                    break;
+                case 1:
+                    pontosP = 30;
+                    console.log("Vc ganhou 30 pontos!");
+                    break;
+                case 0:
+                    pontosP = 10;
+                    console.log("Vc ganhou 10 pontos!");
+                    break;
+            }
+            pontos = pontos + pontosP;
+            $.ajax({
+                type: 'POST',
+                url: 'conexaoAJAXpalavra.php',
+                data: {
+                    nome: activeUser,
+                    palavra: filaPalavras[0].palavra,
+                    dificuldade: dificuldadeValue,
+                    tentativas: filaPalavras[0].tentativas
+                },
+                success: function(response) {
+                    console.log("Data sent to the database successfully!");
+                    console.log(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error occurred while sending data to the database:", error);
+                }
+            });
+            pontuacao.text("Pontos: " + pontos);
+            snakeBody.push([foodX, foodY]); //aumenta a cobra
+            changeFoodPosition();
+
+            filaPalavras.splice(0, 1);
+            console.log(filaPalavras);
+            contPalavras++;
+            contTentativas = contTentativas + filaPalavras[0].tentativas;
+            
+            mFala.css('display', 'none');
+            pontosPalavra.text(pontosP);
+
+            let color = updateLives();
+            pontosPalavra.css('color', color);
+
+            mPontos.css('display', 'flex');
+            setTimeout(function() {
+                mPontos.css('display', 'none');
+                gamePaused=false;
+                togglePause();
+            }, 4000);
+
+        }
+
+        const drawSnake = () => {
+            ctx.fillStyle = '#5B7BF9';  // Cor de preenchimento da cobra
+            ctx.strokeStyle = 'black';  // Cor da borda da cobra
+            snakeBody.forEach(part => {
+                ctx.fillRect(part.x, part.y, 10, 10);    // Desenha um quadrado preenchido para cada parte da cobra
+                ctx.strokeRect(part.x, part.y, 10, 10);  // Desenha a borda do quadrado para cada parte da cobra
+            });
+        }; //desenha cobra
+
+        const advanceSnake = () => {
+            const newHead = {
+                x: snakeBody[0].x + velX,
+                y: snakeBody[0].y + velY
+            };//nova posição da cabeça
+
+            console.log("New Head:",snakeBody[0].x,snakeBody[0].y);
+
+     
+            snakeBody.unshift(newHead); //adiciona a nova cabeça/difreção no corpo da cobra
+        
+            // Se a cobra comer a comida
+            if (newHead.x === foodX && newHead.y === foodY) {
+                falaPalavra();
+                changeFoodPosition(); // Gera uma nova posição para a comida
+            } else {
+                snakeBody.pop(); // Remove o último segmento se não come
+            }
+
+        };
+
+    
+
+        const checkCollision = () => {
+            const head = snakeBody[0];
+          // Verifica se a cabeça atravessou as bordas e reaparece do lado oposto
+        if (head.x == playBoard.width) head.x = 0;
+        if (head.x < 0) head.x =playBoard.width;
+        if (head.y == (260)) head.y = 0;
+        if (head.y < 0) head.y =  playBoard.height;
+            // Verifica colisão com o próprio corpo
+            /*for (let i = 1; i < snakeBody.length; i++) {
+                if (head.x === snakeBody[i].x && head.y === snakeBody[i].y) {
+                    clearInterval(gameInterval); // Para o jogo
+                    alert("Fim de jogo!");
+                }
+            }*/
+        };
+        
+        
         $("#listenBtn").click(function(event) {
             event.preventDefault();
             recognition.stop();
@@ -118,6 +253,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function falaPalavra() {
+            gamePaused=true;
             togglePause();
             var palavra = filaPalavras[0].palavra;
             var indice = filaPalavras[0].imgi;
@@ -174,64 +310,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
 
-        function pronunciaCerta() {
-            console.log("Você acertou!");
-            let pontosP = 0;
-            switch (filaPalavras[0].vidas) {
-                case 3:
-                    pontosP = 100;
-                    console.log("Vc ganhou 100 pontos!");
-                    break;
-                case 2:
-                    pontosP = 50;
-                    console.log("Vc ganhou 50 pontos!");
-                    break;
-                case 1:
-                    pontosP = 30;
-                    console.log("Vc ganhou 30 pontos!");
-                    break;
-                case 0:
-                    pontosP = 10;
-                    console.log("Vc ganhou 10 pontos!");
-                    break;
-            }
-            pontos = pontos + pontosP;
-            $.ajax({
-                type: 'POST',
-                url: 'conexaoAJAXpalavra.php',
-                data: {
-                    nome: activeUser,
-                    palavra: filaPalavras[0].palavra,
-                    dificuldade: dificuldadeValue,
-                    tentativas: filaPalavras[0].tentativas
-                },
-                success: function(response) {
-                    console.log("Data sent to the database successfully!");
-                    console.log(response);
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error occurred while sending data to the database:", error);
-                }
-            });
-            pontuacao.text("Pontos: " + pontos);
-            filaPalavras.splice(0, 1);
-            console.log(filaPalavras);
-            gamePaused = false;
-            contPalavras++;
-            contTentativas = contTentativas + filaPalavras[0].tentativas;
-            snakeBody.push([foodX, foodY]);
-            mFala.css('display', 'none');
-            pontosPalavra.text(pontosP);
-
-            let color = updateLives();
-            pontosPalavra.css('color', color);
-
-            mPontos.css('display', 'flex');
-            setTimeout(function() {
-                mPontos.css('display', 'none');
-                togglePause();
-            }, 4000);
-        }
+       
 
         function pronunciaErrada() {
             if (filaPalavras[0].vidas > 0) {
@@ -332,86 +411,27 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
 
-        const advanceSnake = () => {
-            const newHead = {
-                x: snakeBody[0].x + velX,
-                y: snakeBody[0].y + velY
-            };//nova posição da cabeça
 
-            snakeBody.unshift(newHead); //adiciona a nova cabeça/difreção no corpo da cobra
-        
-            // Se a cobra comer a comida
-            if (newHead.x === foodX && newHead.y === foodY) {
-                changeFoodPosition(); // Gera uma nova posição para a comida
-            } else {
-                snakeBody.pop(); // Remove o último segmento se não come
-            }
-        };
-
-        const checkCollision = () => {
-            const head = snakeBody[0];
-        
-            //colisão com as paredes
-            /*
-            const hitLeftWall = head.x < 0;
-            const hitRightWall = head.x >= playBoard.width;
-            const hitTopWall = head.y < 0;
-            const hitBottomWall = head.y >= playBoard.height;
-            
-
-            if (hitLeftWall || hitRightWall || hitTopWall || hitBottomWall) {
-                clearInterval(gameInterval); // Para o jogo
-                alert("Fim de jogo!");
-            }
-            */    
-        
-            // Verifica colisão com o próprio corpo
-            for (let i = 1; i < snakeBody.length; i++) {
-                if (head.x === snakeBody[i].x && head.y === snakeBody[i].y) {
-                    clearInterval(gameInterval); // Para o jogo
-                    alert("Fim de jogo!");
-                }
-            }
-        };
         
         
         const togglePause = () => {
             if (gamePaused) {
                 console.log("Game Paused");
                 clearInterval(gameInterval);
-                gameInterval = null;
+                //gameInterval = null;
 
                 mJogo.css('display', 'none');
                 mFala.css('display', 'flex');
                 imagemPalavra.css('display', 'flex');
             } else {
                 console.log("Game Resumed");
-                gameInterval = setInterval(initGame, 130);
                 mFala.css('display', 'none');
+                imagemPalavra.css('display', 'none');
                 mJogo.css('display', 'flex');
+                initGame();
             }
         }
 
-        const changeFoodPosition = () => {
-            foodX = Math.floor(Math.random() * (playBoard.width / 10)) * 10;
-            foodY = Math.floor(Math.random() * (playBoard.height / 10)) * 10;
-        };
-
-        const drawSnake = () => {
-            ctx.fillStyle = '#5B7BF9';  // Cor de preenchimento da cobra
-            ctx.strokeStyle = 'black';  // Cor da borda da cobra
-            snakeBody.forEach(part => {
-                ctx.fillRect(part.x, part.y, 10, 10);    // Desenha um quadrado preenchido para cada parte da cobra
-                ctx.strokeRect(part.x, part.y, 10, 10);  // Desenha a borda do quadrado para cada parte da cobra
-            });
-        }; //desenha cobra
-
-        const drawFood = () => {
-            ctx.fillStyle = 'red';
-            ctx.strokestyle = 'darkred';
-            ctx.fillRect(foodX, foodY, 10, 10);
-            ctx.strokeRect(foodX, foodY, 10, 10);
-        };
         
         const updateCanvas = () => {
             ctx.clearRect(0, 0, playBoard.width, playBoard.height); // Limpa o canvas
@@ -424,21 +444,32 @@ document.addEventListener('DOMContentLoaded', function() {
         const initGame = () => {
       
             //let foodMarkup = `<div class="food" style="grid-area: ${foodY} / ${foodX}"></div>`;
+           /* ctx.clearRect(0, 0, playBoard.width, playBoard.height); // Limpa o canvas
+    
+            advanceSnake(); // Move a cobra
+            checkCollision(); // Verifica colisões
+            drawSnake(); // Desenha a cobra
+            changeFoodPosition();//desenha a comida
+            */
+           changeFoodPosition();//desenha a comida
+           gameInterval = setInterval(updateCanvas, 100);
+           document.addEventListener("keydown", changeDirection);
 
-            if (snakeX === foodX && snakeY === foodY) {
+          /*  if (snakeX === foodX && snakeY === foodY) {
                 gamePaused = true;
                 togglePause();
                 changeFoodPosition();
                 falaPalavra();
             }
+          
 
             for (let i = 1; i < snakeBody.length; i++) {
                 if (snakeX === snakeBody[i][0] && snakeY === snakeBody[i][1]) {
                     console.log("Cobra se chocou consigo mesma!");
                     vitoria();
                 }
-            }
-
+            }*/
+           /*reaparecimento das paredes
             if (snakeX > 30) snakeX = 1;
             if (snakeX < 1) snakeX = 30;
             if (snakeY > 30) snakeY = 1;
@@ -454,9 +485,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
            // $playBoard.empty();
 
-           //$playBoard.append(foodMarkup);
+           //$playBoard.append(foodMarkup);*/
             drawSnake();
         }
+        initGame();
 
         function getCookie(nome) {
             const cookies = document.cookie.split(';');
@@ -484,8 +516,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         console.log(filaPalavras);
         filaPalavras = ordenaPalavras(filaPalavras);
-        changeFoodPosition();
-        gameInterval = setInterval(initGame, 130);
-        document.addEventListener("keydown", changeDirection);
+
     });
 });
