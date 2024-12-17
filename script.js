@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
         var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         var recognition = new SpeechRecognition();
         var isRecognitionActive = false;
-        var jogoBtn = $("#boardBtn");
         var finalBtn = $("#finalizar");
         var pauseBtn = $("#pausar");
         var endBtn = $("#endBtn");
@@ -17,9 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
         var mJogo = $("#wrapper");
         var mPontos = $("#mPontos");
         var textbox = $("#textbox");
-        var listenBtn = $("#listenBtn");
         var skipBtn = $("#skipBtn");
-        
+
         var msg = new SpeechSynthesisUtterance();
         var voices = window.speechSynthesis.getVoices();
         msg.voice = voices[10];
@@ -171,7 +169,6 @@ document.addEventListener('DOMContentLoaded', function() {
             };//nova posição da cabeça
      
             snakeBody.unshift(newHead); //adiciona a nova cabeça/difreção no corpo da cobra
-        
 
             if (newHead.x === foodX && newHead.y === foodY) {  // Se a cobra comer a comida
                 falaPalavra();
@@ -179,7 +176,6 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 snakeBody.pop(); // Remove o último segmento se não come
             }
-
         };
 
         const checkCollision = () => {
@@ -187,8 +183,8 @@ document.addEventListener('DOMContentLoaded', function() {
           // Verifica se a cabeça atravessou as bordas e reaparece do lado oposto
         if (head.x > 290) head.x = 0;
         if (head.x < 0) head.x =300;
-        if (head.y == (250)) head.y = 0;
-        if (head.y < 0) head.y = 250;
+        if (head.y == (260)) head.y = 0;
+        if (head.y < 0) head.y = 260;
 
             // Verifica colisão com o próprio corpo
             for (let i = 1; i < snakeBody.length; i++) {
@@ -219,8 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 clearInterval(gameInterval);
             }else{
                 gameInterval = setInterval(updateCanvas, 100); // executa o update canvas
-            }
-            
+            }  
         })
 
         endBtn.click(function() {

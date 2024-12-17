@@ -39,6 +39,7 @@ if(isset($_POST['nome'])){
 <head>
     <meta charset="utf-8">
     <title>SpeakSnake</title>
+    <link rel="icon" src="imagens/spk2miniLogo.png" type="image/png">
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
