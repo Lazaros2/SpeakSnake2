@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var isRecognitionActive = false;
         var jogoBtn = $("#boardBtn");
         var finalBtn = $("#finalizar");
+        var pauseBtn = $("#pausar");
         var endBtn = $("#endBtn");
         var pontuacao = $("#score");
         var pontosPalavra = $("#pontosPalavra");
@@ -60,13 +61,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         function changeFoodPosition (){
 
-            foodX = Math.floor(Math.random() * (playBoard.width / 10)) * 10;
-            foodY = Math.floor(Math.random() * (playBoard.height / 10)) * 10;
+            foodX = Math.floor(Math.random() * (300 / 10)) * 10;
+            foodY = Math.floor(Math.random() * (250/ 10)) * 10;
             console.log("Posição"+foodX,foodY);
         
             while (snakeBody.some(part => part.x === foodX && part.y === foodY)) {
-                foodX = Math.floor(Math.random() * (playBoard.width / 10)) * 10;
-                foodY = Math.floor(Math.random() * (playBoard.height / 10)) * 10;
+                foodX = Math.floor(Math.random() * (300 / 10)) * 10;
+                foodY = Math.floor(Math.random() * (250 / 10)) * 10;
             }//garante que a comida não estará dentro do corpo da cobra
 
         
@@ -172,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 y: snakeBody[0].y + velY
             };//nova posição da cabeça
 
-            console.log("New Head:",snakeBody[0].x,snakeBody[0].y);
+            //console.log("New Head:",snakeBody[0].x,snakeBody[0].y);
 
      
             snakeBody.unshift(newHead); //adiciona a nova cabeça/difreção no corpo da cobra
@@ -192,10 +193,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const checkCollision = () => {
             const head = snakeBody[0];
           // Verifica se a cabeça atravessou as bordas e reaparece do lado oposto
-        if (head.x == playBoard.width) head.x = 0;
-        if (head.x < 0) head.x =playBoard.width;
-        if (head.y == (260)) head.y = 0;
-        if (head.y < 0) head.y =  playBoard.height;
+        if (head.x > 290) head.x = 0;
+        if (head.x < 0) head.x =300;
+        if (head.y == (250)) head.y = 0;
+        if (head.y < 0) head.y = 250;
             // Verifica colisão com o próprio corpo
             /*for (let i = 1; i < snakeBody.length; i++) {
                 if (head.x === snakeBody[i].x && head.y === snakeBody[i].y) {
@@ -219,6 +220,11 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log("Botão Finalizar clicado");
             vitoria();
         });
+
+        pauseBtn.click(function(){
+            console.log("Botão pausar clicado");
+            
+        })
 
         endBtn.click(function() {
             console.log("Botão Finalizar clicado");
