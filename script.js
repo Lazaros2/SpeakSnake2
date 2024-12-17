@@ -19,9 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var textbox = $("#textbox");
         var listenBtn = $("#listenBtn");
         var skipBtn = $("#skipBtn");
-
-        //var pontos = 0;
-
+        
         var msg = new SpeechSynthesisUtterance();
         var voices = window.speechSynthesis.getVoices();
         msg.voice = voices[10];
@@ -53,8 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
             {x: 120, y: 150},
             {x: 110, y: 150},
         ];//coordenadas do corpo da cobra, que serão atualizadas depois
-
- 
+        
         let velX = 10, velY = 0;//velocidade inicial
         let foodX, foodY; //posição da comida
         let pontos=0;
@@ -172,14 +169,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 x: snakeBody[0].x + velX,
                 y: snakeBody[0].y + velY
             };//nova posição da cabeça
-
-            //console.log("New Head:",snakeBody[0].x,snakeBody[0].y);
-
      
             snakeBody.unshift(newHead); //adiciona a nova cabeça/difreção no corpo da cobra
         
-            // Se a cobra comer a comida
-            if (newHead.x === foodX && newHead.y === foodY) {
+
+            if (newHead.x === foodX && newHead.y === foodY) {  // Se a cobra comer a comida
                 falaPalavra();
                 changeFoodPosition(); // Gera uma nova posição para a comida
             } else {
@@ -188,8 +182,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         };
 
-    
-
         const checkCollision = () => {
             const head = snakeBody[0];
           // Verifica se a cabeça atravessou as bordas e reaparece do lado oposto
@@ -197,15 +189,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (head.x < 0) head.x =300;
         if (head.y == (250)) head.y = 0;
         if (head.y < 0) head.y = 250;
+
             // Verifica colisão com o próprio corpo
-            /*for (let i = 1; i < snakeBody.length; i++) {
+            for (let i = 1; i < snakeBody.length; i++) {
                 if (head.x === snakeBody[i].x && head.y === snakeBody[i].y) {
-                    clearInterval(gameInterval); // Para o jogo
-                    alert("Fim de jogo!");
+                    vitoria();
                 }
-            }*/
+            }
         };
-        
         
         $("#listenBtn").click(function(event) {
             event.preventDefault();
@@ -223,6 +214,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         pauseBtn.click(function(){
             console.log("Botão pausar clicado");
+            gamePaused =! gamePaused;
+            if(gamePaused){
+                clearInterval(gameInterval);
+            }else{
+                gameInterval = setInterval(updateCanvas, 100); // executa o update canvas
+            }
             
         })
 
@@ -316,8 +313,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
 
-       
-
         function pronunciaErrada() {
             if (filaPalavras[0].vidas > 0) {
                 filaPalavras[0].vidas--;
@@ -394,7 +389,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return color;
         }
 
-
         const changeDirection = (event) => {
             const keyPressed = event.keyCode;
             const goingUp = velY === -10;
@@ -417,9 +411,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
 
-
-        
-        
         const togglePause = () => {
             if (gamePaused) {
                 console.log("Game Paused");
@@ -438,7 +429,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        
         const updateCanvas = () => {
             ctx.clearRect(0, 0, playBoard.width, playBoard.height); // Limpa o canvas
             drawFood();
@@ -448,50 +438,9 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         const initGame = () => {
-      
-            //let foodMarkup = `<div class="food" style="grid-area: ${foodY} / ${foodX}"></div>`;
-           /* ctx.clearRect(0, 0, playBoard.width, playBoard.height); // Limpa o canvas
-    
-            advanceSnake(); // Move a cobra
-            checkCollision(); // Verifica colisões
-            drawSnake(); // Desenha a cobra
-            changeFoodPosition();//desenha a comida
-            */
            changeFoodPosition();//desenha a comida
            gameInterval = setInterval(updateCanvas, 100);
            document.addEventListener("keydown", changeDirection);
-
-          /*  if (snakeX === foodX && snakeY === foodY) {
-                gamePaused = true;
-                togglePause();
-                changeFoodPosition();
-                falaPalavra();
-            }
-          
-
-            for (let i = 1; i < snakeBody.length; i++) {
-                if (snakeX === snakeBody[i][0] && snakeY === snakeBody[i][1]) {
-                    console.log("Cobra se chocou consigo mesma!");
-                    vitoria();
-                }
-            }*/
-           /*reaparecimento das paredes
-            if (snakeX > 30) snakeX = 1;
-            if (snakeX < 1) snakeX = 30;
-            if (snakeY > 30) snakeY = 1;
-            if (snakeY < 1) snakeY = 30;
-
-            for (let index = snakeBody.length - 1; index > 0; index--) {
-                snakeBody[index] = snakeBody[index - 1];
-            }
-
-            snakeBody[0] = [snakeX, snakeY];
-            snakeX += velX;
-            snakeY += velY;
-
-           // $playBoard.empty();
-
-           //$playBoard.append(foodMarkup);*/
             drawSnake();
         }
         initGame();
@@ -519,9 +468,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         console.log("Nome do usuário: " + activeUser);
         console.log("Dif: " + dificuldadeValue);
-
         console.log(filaPalavras);
         filaPalavras = ordenaPalavras(filaPalavras);
-
     });
 });
