@@ -2,7 +2,7 @@
     // Verifique se a variável de sessão nome está definida e não está vazia
     if(!isset($_SESSION)){
         session_start();
-        echo "<input type='hidden' id='nomeUsuario' value='" . $_SESSION['nome'] . "'>";
+        echo "<input type='hidden' id='nomeUsuario' value='" . $_SESSION['name'] . "'>";
         //echo "<script>alert($_SESSION['nome']);</script>";
     }
 ?>
